@@ -25,7 +25,7 @@ jobs:
           - source
           - valheim
           - thebattleforwesnoth
-          - space-engineers
+          - spaceengineers
           
     steps:
       - uses: actions/checkout@v4
