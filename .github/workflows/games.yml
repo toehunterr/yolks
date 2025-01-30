@@ -16,15 +16,6 @@ jobs:
       fail-fast: false
       matrix:
         game:
-          - altv
-          - arma3
-          - dayz                
-          - mohaa
-          - rust
-          - samp
-          - source
-          - valheim
-          - thebattleforwesnoth
           - spaceengineers
           
     steps:
