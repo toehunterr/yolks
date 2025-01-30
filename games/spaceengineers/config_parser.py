@@ -18,7 +18,7 @@ def update_xml(file_path):
     # Only this path needs Wine Z: drive format for the game server
     update_path = f"Z:/home/container/config/Saves/{os.environ['WORLD_NAME']}/Sandbox.sbc"
     root.find('LoadWorld').text = update_path
-    root.find('ExperimentalMode').text = os.environ['EXPERIMENTAL_ENABLED']
+    
     root.find('ServerPort').text = os.environ['SERVER_PORT']
     root.find('SteamPort').text = os.environ['STEAM_PORT']
     root.find('ServerName').text = os.environ['SERVER_NAME']
@@ -41,10 +41,6 @@ def update_sandbox(file_path):
         settings.find('EnableSaving').text = os.environ['SAVE_ENABLED']
         settings.find('ExperimentalMode').text = os.environ['EXPERIMENTAL_ENABLED']
         settings.find('EnableIngameScripts').text = os.environ['INGAMESCRIPTS_ENABLED']
-    
-    exp_mode = root.find('ExperimentalMode')
-    if exp_mode is not None:
-        exp_mode.text = os.environ['EXPERIMENTAL_ENABLED']
     
     tree.write(file_path)
 
