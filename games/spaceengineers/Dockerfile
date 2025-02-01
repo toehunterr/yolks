@@ -21,8 +21,9 @@
     RUN	            wget -q -O /usr/sbin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
                    && chmod +x /usr/sbin/winetricks
     
-    COPY            ./config_parser.py /parser/config_parser.py
-    COPY            ./../entrypoint.sh /entrypoint.sh
+    COPY            ./config_parser.py /config_parser.py
+    RUN             chown container:container /config_parser.py && chmod +x /config_parser.py
+    COPY            ./../entrypoint.sh /entrypoint.sh    
     
     ENV             HOME=/home/container
     ENV             WINEPREFIX=/home/container/.wine

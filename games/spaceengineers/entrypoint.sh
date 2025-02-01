@@ -81,8 +81,7 @@ for trick in $WINETRICKS_RUN; do
 done
 
 # Run config parser
-chmod +x /parser/config_parser.py
-python3 /parser/config_parser.py
+python3 /config_parser.py
 echo "Config Parsed"
 
 # Replace Startup Variables
