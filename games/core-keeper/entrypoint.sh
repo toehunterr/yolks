@@ -43,4 +43,4 @@ MODIFIED_STARTUP=$(echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo -e ":/home/container$ ${MODIFIED_STARTUP}"
 
 # Run the Server and Game ID Monitor
-eval ${MODIFIED_STARTUP} & python3 /game_id.py
+eval ${MODIFIED_STARTUP} 

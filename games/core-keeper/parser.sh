@@ -33,40 +33,40 @@ modify_config() {
         case "$setting" in
             GAME_ID)
                 echo "Updating key: gameId with value: $value"
-                jq -r ".gameId = \"$value\"" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".gameId = \"$value\"" "$CONFIG_PATH"
                 ;;
             WORLD)
                 echo "Updating key: world with value: $value"
-                jq -r ".world = $value" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".world = $value" "$CONFIG_PATH"
                 ;;
             WORLD_NAME)
                 echo "Updating key: worldName with value: $value"
-                jq -r ".worldName = \"$value\"" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".worldName = \"$value\"" "$CONFIG_PATH"
                 ;;
             WORLD_SEED)
                 echo "Updating key: worldSeed with value: $value"
-                jq -r ".worldSeed = \"$value\"" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".worldSeed = \"$value\"" "$CONFIG_PATH"
                 ;;
             MAX_PLAYERS)
                 echo "Updating key: maxNumberPlayers with value: $value"
-                jq -r ".maxNumberPlayers = $value" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".maxNumberPlayers = $value" "$CONFIG_PATH"
                 ;;
             MAX_PACKETS)
                 echo "Updating key: maxNumberPacketsSentPerFrame with value: $value"
-                jq -r ".maxNumberPacketsSentPerFrame = $value" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".maxNumberPacketsSentPerFrame = $value" "$CONFIG_PATH"
                 ;;
             NETWORK_SEND_RATE)
                 echo "Updating key: networkSendRate with value: $value"
-                jq -r ".networkSendRate = $value" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".networkSendRate = $value" "$CONFIG_PATH"
                 ;;
             WORLD_MODE)
                 parsed_mode=$(parse_world_mode "$value")
                 echo "Updating key: worldMode with value: $parsed_mode"
-                jq -r ".worldMode = $(echo "$parsed_mode" | grep -oE '[0-9]+')" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".worldMode = $(echo "$parsed_mode" | grep -oE '[0-9]+')" "$CONFIG_PATH"
                 ;;
             SEASON_OVERRIDE)
                 echo "Updating key: seasonOverride with value: $value"
-                jq -r ".seasonOverride = $value" "$CONFIG_PATH" > "$CONFIG_PATH"
+                jq -i ".seasonOverride = $value" "$CONFIG_PATH"
                 ;;
             *)
                 echo "Skipping unknown setting: $setting"
