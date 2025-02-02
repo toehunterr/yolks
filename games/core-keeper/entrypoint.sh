@@ -13,8 +13,6 @@ cd /home/container
 INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
 export INTERNAL_IP
 
-python3 /parser.py
-
 ## just in case someone removed the defaults.
 if [ "${STEAM_USER}" == "" ]; then
     echo -e "steam user is not set.\n"
@@ -37,6 +35,8 @@ if [ -z ${AUTO_UPDATE} ] || [ "${AUTO_UPDATE}" == "1" ]; then
 else
     echo -e "Not updating game server as auto update was set to 0. Starting Server"
 fi
+
+python3 /parser.py
 
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')

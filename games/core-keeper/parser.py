@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 def parse_world_mode(mode: str) -> int:
     mode = str(mode).upper()
@@ -19,7 +20,19 @@ def parse_season_override(season: str) -> int:
     if season == "LUNAR NEW YEAR": return 7
     return int(season) if season.isdigit() else -1
 
+def wait_for_config(config_path: str, timeout: int = 300) -> bool:
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        if os.path.exists(config_path):
+            return True
+        time.sleep(1)
+    return False
+
 def update_config(config_path: str) -> None:
+    if not wait_for_config(config_path):
+        print(f"Config file not found after waiting: {config_path}")
+        return
+
     with open(config_path, 'r') as f:
         config = json.load(f)
 
