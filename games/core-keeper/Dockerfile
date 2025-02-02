@@ -8,7 +8,7 @@ ENV         DISPLAY_DEPTH=24
 RUN         dpkg --add-architecture i386 \
             && apt-get update \
             && apt-get upgrade -y \
-            && apt-get install -y tar curl gcc g++ lib32gcc-s1 libgcc-12-dev libgcc-11-dev libcurl4-gnutls-dev:i386 libssl-dev:i386 libcurl4:i386 lib32tinfo6 libtinfo6:i386 lib32z1 lib32stdc++6 libncurses5:i386 libcurl3-gnutls:i386 libsdl2-2.0-0:i386 libsdl2-2.0-0 iproute2 gdb libsdl1.2debian libfontconfig1 telnet net-tools netcat-traditional tzdata numactl xvfb wget tini python3 \
+            && apt-get install -y tar curl gcc g++ lib32gcc-s1 libgcc-12-dev libgcc-11-dev libcurl4-gnutls-dev:i386 libssl-dev:i386 libcurl4:i386 lib32tinfo6 libtinfo6:i386 lib32z1 lib32stdc++6 libncurses5:i386 libcurl3-gnutls:i386 libsdl2-2.0-0:i386 libsdl2-2.0-0 iproute2 gdb libsdl1.2debian libfontconfig1 telnet net-tools netcat-traditional tzdata numactl xvfb wget tini python3 jq \
             && useradd -m -d /home/container container
             
 ## install rcon
@@ -31,6 +31,7 @@ STOPSIGNAL SIGINT
 
 COPY --chown=container:container ../entrypoint.sh /entrypoint.sh
 COPY --chown=container:container game_id.py /game_id.py
-RUN chmod +x /entrypoint.sh /game_id.py
+COPY --chown=container:container parser.sh /parser.sh
+RUN chmod +x /entrypoint.sh /game_id.py /parser.sh
 ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 CMD ["/entrypoint.sh"]
