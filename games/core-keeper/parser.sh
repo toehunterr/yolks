@@ -13,19 +13,42 @@ parse_world_mode() {
     esac
 }
 
+# Function to parse season override
+parse_season_override() {
+    local season="$1"
+    case "${season^^}" in
+        NONE) echo "-1" ;;
+        EASTER) echo "1" ;;
+        HALLOWEEN) echo "2" ;;
+        CHRISTMAS) echo "3" ;;
+        VALENTINES) echo "4" ;;
+        ANNIVERSARY) echo "5" ;;
+        CHERRY BLOSSOM FESTIVAL) echo "6" ;;
+        LUNAR NEW YEAR) echo "7" ;;
+        *) 
+            if [[ "$season" =~ ^-?[0-9]+$ ]]; then
+                echo "$season"
+            else
+                echo "-1"
+            fi
+            ;;
+    esac
+}
+
+
 # Function to parse and modify the configuration file
 modify_config() {
     # Check if the configuration file exists
     if [[ ! -f "$CONFIG_PATH" ]]; then
         echo "Error: Configuration file not found at $CONFIG_PATH"
         exit 1
-    }
+    fi
 
     # Check if jq is installed
     if ! command -v jq &> /dev/null; then
         echo "Error: jq is required but not installed. Please install jq first."
         exit 1
-    }
+    fi
 
     # Iterate through environment variables to modify settings
     while IFS='=' read -r setting value; do
@@ -65,8 +88,9 @@ modify_config() {
                 jq -i ".worldMode = $(echo "$parsed_mode" | grep -oE '[0-9]+')" "$CONFIG_PATH"
                 ;;
             SEASON_OVERRIDE)
-                echo "Updating key: seasonOverride with value: $value"
-                jq -i ".seasonOverride = $value" "$CONFIG_PATH"
+                parsed_season=$(parse_season_override "$value")
+                echo "Updating key: seasonOverride with value: $parsed_season"
+                jq -i ".seasonOverride = $parsed_season" "$CONFIG_PATH"
                 ;;
             *)
                 echo "Skipping unknown setting: $setting"
