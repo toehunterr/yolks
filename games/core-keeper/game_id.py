@@ -1,53 +1,61 @@
 import re
 import time
-from datetime import datetime
 import os
+import sys
+import signal
 
-def monitor_log():
-    start_time = time.time()
-    timeout = 180
-    while time.time() - start_time < timeout:
-        try:
-            if os.path.exists("CoreKeeperServerLog.txt"):
-                break
-            print("Waiting for log file to be created...")
-            time.sleep(5)
-        except Exception as e:
-            print(f"Error checking for log file: {e}")
-            time.sleep(5)
-    else:
-        print("Timeout: File not found after 3 minutes")
-        exit(1)
+class LogMonitor:
+    def __init__(self):
+        self.shutdown_requested = False
+        signal.signal(signal.SIGTERM, self.handle_sigterm)
 
-    seen_markers = 0
-    game_id = None
-    timescale_seen = False
-    game_id_time = None
-    
-    with open("CoreKeeperServerLog.txt", "r") as f:
+    def handle_sigterm(self, signum, frame):
+        print("SIGTERM received. Initiating shutdown...", file=sys.stderr)
+        self.shutdown_requested = True
+
+    def monitor_log(self):
+        start_time = time.time()
+        timeout = 180  # 3 minutes
+        
         while time.time() - start_time < timeout:
-            line = f.readline()
-            if not line:
-                time.sleep(0.1)
-                continue
-                
-            if "Started session with Game ID" in line:
-                game_id = re.search(r'Game ID ([a-zA-Z0-9]+)', line).group(1)
-                game_id_time = time.time()
+            if self.shutdown_requested:
+                print("Shutdown requested. Exiting log monitor.", file=sys.stderr)
+                return None
             
-            if "Adding marker for" in line:
-                seen_markers += 1
-                
-            if "timescale = 0" in line:
-                timescale_seen = True
+            if os.path.exists("CoreKeeperServerLog.txt"):
+                try:
+                    with open("CoreKeeperServerLog.txt", "r") as f:
+                        content = f.read()
+                        match = re.search(r'Started session with Game ID ([a-zA-Z0-9]+)', content)
+                        if match:
+                            game_id = match.group(1)
+                            print("-------------")
+                            print(f"Server Game ID: {game_id}")
+                            print("-------------")
+                            return game_id
+                except Exception as e:
+                    print(f"Error reading log file: {e}", file=sys.stderr)
+            
+            time.sleep(5)
+        
+        print("Timeout reached: Game ID not found", file=sys.stderr)
+        return None
 
-            current_time = time.time()
-            if game_id and game_id_time and (current_time - game_id_time >= 15):
-                print(f"Server GameID is {game_id}")
-                if seen_markers >= 8 and timescale_seen:
-                    exit(0)
-                else:
-                    exit(1)
+    def run(self):
+        while not self.shutdown_requested:
+            result = self.monitor_log()
+            if result:
+                break
+            
+            # Check for shutdown every 30 seconds if no result
+            for _ in range(6):  # 6 * 5 = 30 seconds
+                if self.shutdown_requested:
+                    break
+                time.sleep(5)
+
+def main():
+    monitor = LogMonitor()
+    monitor.run()
 
 if __name__ == "__main__":
-    monitor_log()
+    main()
