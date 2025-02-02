@@ -24,7 +24,7 @@ def parse_season_override(season: str) -> int:
     }
     return seasons.get(season, int(season) if season.isdigit() else -1)
 
-def wait_for_config(config_path: str, timeout: int = 300) -> bool:
+def wait_for_config(config_path: str, timeout: int = 30) -> bool:
     start_time = time.time()
     while time.time() - start_time < timeout:
         if os.path.exists(config_path):
