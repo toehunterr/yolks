@@ -30,7 +30,7 @@ WORKDIR     /home/container
 STOPSIGNAL SIGINT
 
 COPY --chown=container:container ../entrypoint.sh /entrypoint.sh
-COPY --chown=container:container parser.sh /parser.sh
-RUN chmod +x /entrypoint.sh /parser.sh
+COPY --chown=container:container parser.py /parser.py
+RUN chmod +x /entrypoint.sh /parser.py
 ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 CMD ["/entrypoint.sh"]
