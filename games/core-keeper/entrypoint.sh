@@ -13,7 +13,7 @@ cd /home/container
 INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
 export INTERNAL_IP
 
-./parser.sh
+/bin/bash /parser.sh
 
 ## just in case someone removed the defaults.
 if [ "${STEAM_USER}" == "" ]; then
