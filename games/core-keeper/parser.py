@@ -3,25 +3,11 @@ import os
 
 def parse_world_mode(mode: str) -> int:
     mode = str(mode).strip()
-    modes = {
-        "Normal": 0,
-        "Hard": 1
-    }
-    return modes.get(mode, int(mode) if mode.isdigit() else 0)
+    return int(mode) if mode.isdigit() else 0
 
 def parse_season_override(season: str) -> int:
     season = str(season).strip()
-    seasons = {
-        "None": -1,
-        "Easter": 1,
-        "Halloween": 2,
-        "Christmas": 3,
-        "Valentines": 4,
-        "Anniversary": 5,
-        "Cherry Blossom Festival": 6,
-        "Lunar New Year": 7
-    }
-    return seasons.get(season, int(season) if season.isdigit() else -1)
+    return int(season) if season.isdigit() else -1
 
 def update_config(config_path: str) -> None:
     if not os.path.exists(config_path):
