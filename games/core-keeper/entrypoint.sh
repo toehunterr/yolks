@@ -36,11 +36,13 @@ else
     echo -e "Not updating game server as auto update was set to 0. Starting Server"
 fi
 
-python3 /parser.py
+
 
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo -e ":/home/container$ ${MODIFIED_STARTUP}"
+
+python3 /parser.py
 
 # Run the Server and Game ID Monitor
 eval ${MODIFIED_STARTUP} 
