@@ -3,22 +3,26 @@ import os
 import time
 
 def parse_world_mode(mode: str) -> int:
-    mode = str(mode).upper()
-    if mode == "NORMAL": return 0
-    if mode == "HARD": return 1
-    return int(mode) if mode.isdigit() else 0
+    mode = str(mode).strip().upper()
+    modes = {
+        "NORMAL": 0,
+        "HARD": 1
+    }
+    return modes.get(mode, int(mode) if mode.isdigit() else 0)
 
 def parse_season_override(season: str) -> int:
-    season = str(season).upper()
-    if season == "NONE": return -1
-    if season == "EASTER": return 1
-    if season == "HALLOWEEN": return 2
-    if season == "CHRISTMAS": return 3
-    if season == "VALENTINES": return 4
-    if season == "ANNIVERSARY": return 5
-    if season == "CHERRY BLOSSOM FESTIVAL": return 6
-    if season == "LUNAR NEW YEAR": return 7
-    return int(season) if season.isdigit() else -1
+    season = str(season).strip().upper()
+    seasons = {
+        "NONE": -1,
+        "EASTER": 1,
+        "HALLOWEEN": 2,
+        "CHRISTMAS": 3,
+        "VALENTINES": 4,
+        "ANNIVERSARY": 5,
+        "CHERRY BLOSSOM FESTIVAL": 6,
+        "LUNAR NEW YEAR": 7
+    }
+    return seasons.get(season, int(season) if season.isdigit() else -1)
 
 def wait_for_config(config_path: str, timeout: int = 300) -> bool:
     start_time = time.time()
@@ -58,8 +62,8 @@ def update_config(config_path: str) -> None:
                     print(f"Updating {config_key}: {value} ({parsed_value})")
                 else:
                     print(f"Updating {config_key}: {value}")
-            except:
-                print(f"Error parsing {env_var}")
+            except Exception as e:
+                print(f"Error parsing {env_var}: {e}")
 
     with open(config_path, 'w') as f:
         json.dump(config, f, indent=4)
