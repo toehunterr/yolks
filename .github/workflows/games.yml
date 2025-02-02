@@ -43,7 +43,9 @@ jobs:
       fail-fast: false
       matrix:
         game:
-    
+          - minetest
+          - mta
+          - core-keeper
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
