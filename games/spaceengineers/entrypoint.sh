@@ -88,5 +88,22 @@ done
 MODIFIED_STARTUP=$(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo ":/home/container$ ${MODIFIED_STARTUP}"
 
+# Clean and validate XML file
+if [ -f "/home/container/config/SpaceEngineers-Dedicated.cfg" ]; then
+    # Remove BOM and ensure no leading whitespace
+    sed -i '1s/^\xEF\xBB\xBF//' "/home/container/config/SpaceEngineers-Dedicated.cfg"
+    # Ensure XML declaration is first line
+    sed -i '/<?xml/!b;1{h;d};1!{x;/<?xml/!p;x}' "/home/container/config/SpaceEngineers-Dedicated.cfg"
+    # Remove any empty lines at start of file
+    sed -i '/./,$!d' "/home/container/config/SpaceEngineers-Dedicated.cfg"
+    # Convert to Unix line endings
+    dos2unix "/home/container/config/SpaceEngineers-Dedicated.cfg"
+    
+    echo "XML file cleaned, checking first line:"
+    head -n 1 "/home/container/config/SpaceEngineers-Dedicated.cfg"
+fi
+
+python3 /config_parser.py
+
 # Run the Server
 eval ${MODIFIED_STARTUP}
