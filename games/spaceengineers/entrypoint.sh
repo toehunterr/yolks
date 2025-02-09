@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Wait for the container to fully initialize
 sleep 1
 
@@ -49,6 +50,10 @@ fi
 # Install necessary to run packages
 echo "First launch will throw some errors. Ignore them"
 mkdir -p $WINEPREFIX
+
+# Install vcrun2019
+echo "Installing vcrun2019"
+winetricks -q vcrun2019
 
 # Check if wine-gecko required and install it if so
 if [[ $WINETRICKS_RUN =~ gecko ]]; then
