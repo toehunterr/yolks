@@ -20,9 +20,10 @@
     RUN             apt update
     RUN             apt install --install-recommends winehq-stable cabextract wine-binfmt -y
     
-    # Set up Winetricks
+    # Set up Winetricks and install Visual C++ Redistributable
     RUN             wget -q -O /usr/sbin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
-                    && chmod +x /usr/sbin/winetricks
+                    && chmod +x /usr/sbin/winetricks \
+                    && winetricks -q vcrun2019
     
     COPY            ./config_parser.py /config_parser.py
     RUN             chown container:container /config_parser.py && chmod +x /config_parser.py
