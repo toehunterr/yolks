@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         game:
-          - core-keeper
+          - spaceengineers
           
     steps:
       - uses: actions/checkout@v4

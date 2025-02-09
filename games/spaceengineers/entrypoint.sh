@@ -80,10 +80,6 @@ for trick in $WINETRICKS_RUN; do
        winetricks -q $trick
 done
 
-# Run config parser
-python3 /config_parser.py
-echo "Config Parsed"
-
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo ":/home/container$ ${MODIFIED_STARTUP}"
