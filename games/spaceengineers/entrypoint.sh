@@ -10,10 +10,6 @@ export TZ
 INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
 export INTERNAL_IP
 
-# Run config parser
-python3 /config_parser.py
-echo "Config Parsed"
-
 # Information output
 echo "Running on Debian $(cat /etc/debian_version)"
 echo "Current timezone: $(cat /etc/timezone)"
