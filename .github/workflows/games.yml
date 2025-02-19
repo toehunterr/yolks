@@ -16,8 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         game:
-          - icarus
-          - icarusv2
+          - core-keeperv2
+          
           
     steps:
       - uses: actions/checkout@v4
